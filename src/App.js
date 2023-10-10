@@ -1,10 +1,13 @@
-import logo from './logo.svg';
 import './App.css';
 import { RouterProvider } from 'react-router-dom';
-import { router } from './router';
+
+import { routers } from './router';
+
+// css
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-    return <RouterProvider router={router}></RouterProvider>;
+    return <RouterProvider router={routers}></RouterProvider>;
 }
 
 export default App;
