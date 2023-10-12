@@ -1,34 +1,62 @@
-import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import './style.css';
+import { Col, Row } from 'react-bootstrap';
 
 function Sidebar({ children, menu }) {
+    const sidebarMenuRef = useRef(null);
+    let [sidebarChildrenStyle, setSidebarChildStyle] = useState(null);
+
+    useEffect(() => {
+        if (sidebarMenuRef.current) {
+            sidebarChildrenStyle = {
+                width: `calc(100% - ${sidebarMenuRef?.current?.getBoundingClientRect?.()?.width}px)`,
+            };
+            setSidebarChildStyle(sidebarChildrenStyle);
+        }
+    }, [sidebarMenuRef]);
+
     return (
-        <Row>
-            <Col lg={3}>
-                <ul>
+        <section className="w-100">
+            <div className="sidebar-menu-container" ref={sidebarMenuRef}>
+                <ul className="sidebar-menu">
+                    <li>
+                        <div className="sidebar-logo">
+                            <h2 className="mb-1">AN TIEM</h2>
+                            <i className="text-end">website</i>
+                        </div>
+                    </li>
                     {menu.map((item, index) => {
-                        const { link, name, ...restItem } = item;
+                        const { path, name, ...restItem } = item;
                         return (
                             <li key={index}>
-                                <Link to={link}>{name}</Link>
-                                <ul>
-                                    {restItem?.subs?.map((subItem, index2) => {
-                                        const { link, name } = subItem;
-                                        return (
-                                            <li key={index2}>
-                                                <Link to={link}>{name}</Link>
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
+                                <Link to={path}>
+                                    <Row>
+                                        <Col xs="auto">{restItem?.icon}</Col>
+                                        <Col>{name}</Col>
+                                    </Row>
+                                </Link>
+                                {!!restItem?.subs && (
+                                    <ul>
+                                        {restItem?.subs?.map((subItem, index2) => {
+                                            const { path, name } = subItem;
+                                            return (
+                                                <li key={index2}>
+                                                    <Link to={path}>{name}</Link>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                )}
                             </li>
                         );
                     })}
                 </ul>
-            </Col>
-            <Col lg={9}>{children}</Col>
-        </Row>
+            </div>
+            <div className="sidebar-children p-4" style={sidebarChildrenStyle}>
+                {children}
+            </div>
+        </section>
     );
 }
 

@@ -1,0 +1,50 @@
+#sidebar {
+}
+
+.sidebar-menu-container {
+    display: inline-block;
+    min-width: 220px;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.sidebar-children {
+    display: inline-block;
+    position: fixed;
+    left: 220px;
+    top: 0;
+    padding: 0.42rem;
+    overflow-y: scroll;
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar-menu {
+    color: #fff;
+    min-height: 100%;
+    height: 100%;
+    display: block;
+    padding: 0;
+}
+
+.sidebar-menu li {
+    text-decoration: none;
+    list-style: none;
+    padding: 0.42rem;
+    cursor: pointer;
+}
+
+.sidebar-menu li:hover,
+.sidebar-menu li:hover a {
+    background-color: #fff;
+    color: #000;
+}
+
+.sidebar-menu li a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+}

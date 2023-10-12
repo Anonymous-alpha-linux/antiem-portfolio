@@ -1,0 +1,46 @@
+.admin-control {
+    cursor: pointer;
+    position: relative;
+}
+
+.selected-section {
+    opacity: 0.4;
+}
+
+.selected-section::after,
+.admin-control:hover::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background-color: var(--clr-border); */
+    background-color: #010101;
+    opacity: 0.3;
+}
+
+.admin-images-form {
+    display: flex;
+    width: 40%;
+    margin: 0 auto;
+}
+.admin-image-form-title {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 0;
+}
+.edit-form-content {
+    width: 100%;
+}
+.modal-dialog {
+    max-width: unset;
+}
+.modal-content {
+    background: none;
+}
+.child-content-swiper {
+    padding: 0 20px;
+    padding-bottom: 40px;
+}
