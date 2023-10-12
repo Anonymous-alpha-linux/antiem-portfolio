@@ -1,0 +1,135 @@
+.section-1-slide {
+    width: 100%;
+}
+.section-1-slide {
+    height: 800px !important;
+    text-align: center;
+    position: relative;
+}
+.section-1-slide-img {
+    height: 100%;
+    width: auto !important;
+}
+.section-1-slide-img-filter {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    position: absolute;
+    filter: blur(64px);
+    -webkit-filter: blur(64px);
+    background-position: center;
+    background: rgba(0, 0, 0, 0.7);
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+}
+.section-2-title {
+    font-size: 3vw;
+    font-weight: 700;
+    top: 0;
+}
+.section-2-content {
+    width: 80%;
+}
+.section-2-col-1 {
+}
+.section-3 {
+    /* background-color: #f6f6f6; */
+}
+.section-3-container {
+    overflow: hidden;
+    padding: 30px 10px;
+}
+.section-3-title {
+    font-size: calc(16px + 1vw);
+    font-weight: 700;
+}
+.section-3-title-form {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+}
+.section-3-line {
+    width: 300px;
+    height: 1px;
+    background-color: #1a1a1a;
+}
+.section-3-card {
+    overflow: hidden;
+    height: 100%;
+}
+.section-3-card-content {
+    width: 100%;
+    padding: 20px;
+    background-color: #d9e1c3;
+    text-align: center;
+}
+.section-3-card-img {
+    height: 300px;
+    width: 100%;
+}
+.section-4 {
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+}
+.section-4-img-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.section-4-img {
+    filter: brightness(50%);
+    min-width: 100%;
+}
+.section-4-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+}
+.section-4-title {
+    font-weight: 600;
+    font-size: calc(14px + 2.7vw);
+    margin-bottom: 10px;
+}
+.section-4-btn-blog {
+    padding: 18px 30px;
+    background-color: white;
+    color: var(--clr-primary);
+    width: fit-content;
+    margin: 0 auto;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s;
+}
+.section-4-btn-blog:hover {
+    background-color: #1a1a1a;
+    color: white;
+}
+.section-5-bg {
+    height: 400px;
+    background-color: #d9e1c3;
+}
+.section-5-title {
+    font-size: calc(16px + 2vw);
+    font-weight: 700;
+}
+.section-5-project {
+    transform: translateY(-30%);
+}
+.section-5-project-date {
+    color: #818181;
+    font-weight: 600;
+}
+.section-5-project-name {
+    font-size: calc(16px + 0.7vw);
+    font-weight: 700;
+}

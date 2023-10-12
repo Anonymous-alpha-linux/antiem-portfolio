@@ -1,8 +1,8 @@
-import { Outlet, createBrowserRouter } from 'react-router-dom';
-import { adminRoutes } from './admin';
-import { publicRoutes } from './public';
+const { createBrowserRouter, Outlet } = require('react-router-dom');
+const { publicRoutes } = require('./public');
+const { adminRoutes } = require('./admin');
 
-export const routers = createBrowserRouter([
+const routers = createBrowserRouter([
     {
         path: 'admin',
         element: <Outlet></Outlet>,
@@ -14,3 +14,5 @@ export const routers = createBrowserRouter([
         children: publicRoutes,
     },
 ]);
+
+export { routers };
