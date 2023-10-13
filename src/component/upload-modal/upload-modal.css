@@ -1,0 +1,5 @@
+#asset-list {
+    border: 1px solid var(--clr-border);
+    padding: 0.35rem 0;
+    min-height: 500px;
+}

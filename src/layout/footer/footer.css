@@ -9,6 +9,9 @@
 .footer-col-bot div {
     margin-bottom: 12px;
 }
+.footer-contact-form {
+    align-items: center;
+}
 .footer-input-email {
     border: 1px solid var(--clr-border-input);
     border-radius: 7px;
@@ -34,4 +37,9 @@
     justify-content: center;
     border-radius: 5px;
     cursor: pointer;
+}
+@media only screen and (max-width: 576px) {
+    .footer-contact-form {
+        gap: 20px;
+    }
 }
