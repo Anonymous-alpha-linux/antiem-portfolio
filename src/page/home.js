@@ -2,8 +2,8 @@ import React from 'react';
 import './style/home.css';
 import { Col, Row } from 'react-bootstrap';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, EffectFade, Mousewheel, Keyboard, Autoplay } from 'swiper/modules';
-import Crane from '../img/crane.png';
+import { Navigation, EffectFade, Keyboard, Autoplay } from 'swiper/modules';
+
 const listImg = [
     'https://swiperjs.com/demos/images/nature-1.jpg',
     'https://swiperjs.com/demos/images/nature-2.jpg',
@@ -24,9 +24,7 @@ export default function Home() {
                     {/* <Col className="col-4">1</Col>
                     <Col className="col-8"> */}
                     <Swiper
-                        // cssMode={true}
                         navigation={true}
-                        // mousewheel={true}
                         effect={'fade'}
                         autoplay={{
                             delay: 2500,

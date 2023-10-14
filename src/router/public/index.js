@@ -4,6 +4,7 @@ import Home from '../../page/home';
 
 export const publicRoutes = [
     {
+        name: 'Home Page',
         path: '',
         element: (
             <>
@@ -12,13 +13,5 @@ export const publicRoutes = [
                 <Footer />
             </>
         ),
-    },
-    {
-        path: 'home',
-        element: <h2>Trang chủ</h2>,
-    },
-    {
-        path: 'table-of-content',
-        element: <h2>Table of content</h2>,
     },
 ];

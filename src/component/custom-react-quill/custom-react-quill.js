@@ -72,6 +72,8 @@ class CustomReactQuill extends React.Component {
                             this.quillRef.current.getEditor().insertEmbed(range?.index, 'image', image);
                         }
                     }}
+                    APICallAssets={this.props.APICallAssets}
+                    APIPostAsset={this.props.APIPostAsset}
                 ></UploadModal>
             </>
         );

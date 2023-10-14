@@ -7,9 +7,7 @@ import { BiSolidPhoneCall } from 'react-icons/bi';
 import { IoIosSettings } from 'react-icons/io';
 
 // Pages
-// Page - Admin
-import { PageContentEditor, PageAssetUploader } from '../../page';
-// Page - Public
+import { PageContentEditor, PageAssetUploader, PageAdminBlogPost } from '../../page';
 
 let sidebarMenu = [
     {
@@ -27,13 +25,13 @@ let sidebarMenu = [
     {
         name: 'Blog',
         path: '/admin/blog',
-        element: <h2>Blog</h2>,
+        element: <PageAdminBlogPost></PageAdminBlogPost>,
         icon: <BsNewspaper></BsNewspaper>,
     },
     {
         name: 'Contact',
         path: '/admin/web-content-editor',
-        element: <h2>Website Contact</h2>,
+        element: <PageContentEditor></PageContentEditor>,
         icon: <BiSolidPhoneCall></BiSolidPhoneCall>,
     },
     {
