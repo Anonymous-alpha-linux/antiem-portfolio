@@ -14,12 +14,16 @@ function Navbar() {
     const [login, setLogin] = React.useState(false);
     const [register, setRegister] = React.useState(false);
     const [navMenu, setNavMenu] = React.useState(false);
-    const navlinks = ['Nhà đất bán', 'Nhà cho thuê', 'Dự án', 'Tin tức', 'Wiki BĐS', 'Phân tích đánh giá', 'Danh bạ'];
+    const navlinks = ['Giới thiệu', 'Dịch vụ', 'Sản phẩm', 'Liên Hệ'];
+    window.addEventListener('scroll', function () {
+        var header = this.document.querySelector('.nav');
+        header.classList.toggle('compact', this.window.scrollY > 0);
+    });
     return (
-        <div className="px-4 py-3">
+        <div className="px-5 nav">
             {/* <Login show={login} hide={() => setLogin(false)} />
             <Register show={register} hide={() => setRegister(false)}></Register> */}
-            <Row className="nav">
+            <Row className="w-100">
                 <Col className="nav-frame-1 d-flex align-items-center gap-4">
                     <div className="nav-logo">Logo</div>
                     <div className="nav-topic justify-content-start align-items-center gap-4">
@@ -57,23 +61,24 @@ function Navbar() {
 function SidebarMenu({ show, hide, navLink }) {
     return (
         <Offcanvas show={show} onHide={hide} placement={'end'}>
+            <Offcanvas.Header closeButton>
+                <Offcanvas.Title>Menu</Offcanvas.Title>
+            </Offcanvas.Header>
             <Offcanvas.Body>
                 <div className="nav-sidebar px-3">
-                    <div className="nav-btn-form row gap-3">
-                        <button className="nav-btn-login col py-3">Đăng nhập</button>
-                        <button className="nav-btn-signin col">Đăng ký</button>
-                    </div>
                     <div className="row">
                         <button className="nav-btn-post mt-3 py-3">Đăng tin</button>
                     </div>
                     <div className="">
-                        {navLink.map((item, index) => {
-                            return (
-                                <div className="nav-link my-4" key={index}>
-                                    {item}
-                                </div>
-                            );
-                        })}
+                        <b>
+                            {navLink.map((item, index) => {
+                                return (
+                                    <div className="nav-link my-4" key={index}>
+                                        {item}
+                                    </div>
+                                );
+                            })}
+                        </b>
                     </div>
                 </div>
             </Offcanvas.Body>
