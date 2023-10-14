@@ -1,98 +1,114 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './style/home.css';
 import { Col, Row } from 'react-bootstrap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, EffectFade, Mousewheel, Keyboard, Autoplay } from 'swiper/modules';
-import Crane from '../img/crane.png';
 import { Fade } from 'react-reveal';
-import Zoom from 'react-reveal/Zoom';
+
+import { getSetting } from '../api';
+
+let homePlaceholder = {
+    banner: {
+        title: '',
+        subtitle: '',
+        content: '',
+        images: [
+            'https://swiperjs.com/demos/images/nature-1.jpg',
+            'https://swiperjs.com/demos/images/nature-2.jpg',
+            'https://swiperjs.com/demos/images/nature-3.jpg',
+            'https://swiperjs.com/demos/images/nature-4.jpg',
+            'https://swiperjs.com/demos/images/nature-5.jpg',
+            'https://swiperjs.com/demos/images/nature-6.jpg',
+            'https://swiperjs.com/demos/images/nature-7.jpg',
+            'https://swiperjs.com/demos/images/nature-8.jpg',
+            'https://swiperjs.com/demos/images/nature-9.jpg',
+            'https://swiperjs.com/demos/images/nature-10.jpg',
+        ],
+    },
+    about: {
+        title: 'About Us',
+        content:
+            'An Tiêm Penjing là công ty ĐẦU TIÊN của Việt Nam đi tiên phong trong việc kiến tạo “khu vườn bền vững” – Cam kết không sử dụng hóa chất cho cây trồng, đảm bảo tất cả mọi vật liệu trồng cây đều có nguồn gốc hữu cơ từ thiên nhiên, không làm hại môi trường, an toàn cho nguồn nước và sức khỏe con người ngay cả với trẻ nhỏ.',
+        images: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bmF0dXJlJTIwYmFubmVyfGVufDB8fDB8fHww&w=1000&q=80',
+    },
+    card: {
+        title: 'Dịch vụ của chúng tôi',
+        subtitle: 'An Tiêm',
+        items: [
+            {
+                title: 'Animal Speech Topics',
+                content:
+                    'Writing an exciting and thoughtful speech requires one to select a good topic, research it thoroughly, and formation of individual opinions to express the same.',
+                img: 'https://media.istockphoto.com/id/505625400/photo/toucan-on-the-branch.webp?b=1&s=170667a&w=0&k=20&c=xkza6GPx2UkLHT-FMaplnK5OEV7ZoKNpEriUIEMaxUk=',
+            },
+            {
+                title: 'Animal Speech Topics',
+                content:
+                    'Writing an exciting and thoughtful speech requires one to select a good topic, research it thoroughly, and formation of individual opinions to express the same.',
+                img: 'https://media.istockphoto.com/id/505625400/photo/toucan-on-the-branch.webp?b=1&s=170667a&w=0&k=20&c=xkza6GPx2UkLHT-FMaplnK5OEV7ZoKNpEriUIEMaxUk=',
+            },
+            {
+                title: 'Animal Speech Topics',
+                content:
+                    'Writing an exciting and thoughtful speech requires one to select a good topic, research it thoroughly, and formation of individual opinions to express the same.',
+                img: 'https://media.istockphoto.com/id/505625400/photo/toucan-on-the-branch.webp?b=1&s=170667a&w=0&k=20&c=xkza6GPx2UkLHT-FMaplnK5OEV7ZoKNpEriUIEMaxUk=',
+            },
+        ],
+    },
+    project: {
+        title: 'Dự án gần đây của chúng tôi',
+        subtitle: 'An Tiêm',
+        items: [
+            {
+                title: 'Tên Dự Án',
+                date: '31/12/2022',
+                content: 'Mô tả',
+                img: 'https://img.freepik.com/free-photo/ferocious-tiger-family-nature_23-2150767553.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1696291200&semt=ais',
+            },
+            {
+                title: 'Tên Dự Án',
+                date: '31/12/2022',
+                content: 'Mô tả',
+                img: 'https://img.freepik.com/free-photo/ferocious-tiger-family-nature_23-2150767553.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1696291200&semt=ais',
+            },
+            {
+                title: 'Tên Dự Án',
+                date: '31/12/2022',
+                content: 'Mô tả',
+                img: 'https://img.freepik.com/free-photo/ferocious-tiger-family-nature_23-2150767553.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1696291200&semt=ais',
+            },
+        ],
+    },
+    blog: {
+        title: 'Cool Green Science',
+        subtitle: 'Antiem',
+        button: 'read our blog',
+    },
+};
 
 export default function Home() {
-    const homeContent = {
-        banner: {
-            title: '',
-            subtitle: '',
-            content: '',
-            images: [
-                'https://swiperjs.com/demos/images/nature-1.jpg',
-                'https://swiperjs.com/demos/images/nature-2.jpg',
-                'https://swiperjs.com/demos/images/nature-3.jpg',
-                'https://swiperjs.com/demos/images/nature-4.jpg',
-                'https://swiperjs.com/demos/images/nature-5.jpg',
-                'https://swiperjs.com/demos/images/nature-6.jpg',
-                'https://swiperjs.com/demos/images/nature-7.jpg',
-                'https://swiperjs.com/demos/images/nature-8.jpg',
-                'https://swiperjs.com/demos/images/nature-9.jpg',
-                'https://swiperjs.com/demos/images/nature-10.jpg',
-            ],
-        },
-        about: {
-            title: 'About Us',
-            content:
-                'An Tiêm Penjing là công ty ĐẦU TIÊN của Việt Nam đi tiên phong trong việc kiến tạo “khu vườn bền vững” – Cam kết không sử dụng hóa chất cho cây trồng, đảm bảo tất cả mọi vật liệu trồng cây đều có nguồn gốc hữu cơ từ thiên nhiên, không làm hại môi trường, an toàn cho nguồn nước và sức khỏe con người ngay cả với trẻ nhỏ.',
-            images: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bmF0dXJlJTIwYmFubmVyfGVufDB8fDB8fHww&w=1000&q=80',
-        },
-        card: {
-            title: 'Dịch vụ của chúng tôi',
-            subtitle: 'An Tiêm',
-            items: [
-                {
-                    title: 'Animal Speech Topics',
-                    content:
-                        'Writing an exciting and thoughtful speech requires one to select a good topic, research it thoroughly, and formation of individual opinions to express the same.',
-                    img: 'https://media.istockphoto.com/id/505625400/photo/toucan-on-the-branch.webp?b=1&s=170667a&w=0&k=20&c=xkza6GPx2UkLHT-FMaplnK5OEV7ZoKNpEriUIEMaxUk=',
-                },
-                {
-                    title: 'Animal Speech Topics',
-                    content:
-                        'Writing an exciting and thoughtful speech requires one to select a good topic, research it thoroughly, and formation of individual opinions to express the same.',
-                    img: 'https://media.istockphoto.com/id/505625400/photo/toucan-on-the-branch.webp?b=1&s=170667a&w=0&k=20&c=xkza6GPx2UkLHT-FMaplnK5OEV7ZoKNpEriUIEMaxUk=',
-                },
-                {
-                    title: 'Animal Speech Topics',
-                    content:
-                        'Writing an exciting and thoughtful speech requires one to select a good topic, research it thoroughly, and formation of individual opinions to express the same.',
-                    img: 'https://media.istockphoto.com/id/505625400/photo/toucan-on-the-branch.webp?b=1&s=170667a&w=0&k=20&c=xkza6GPx2UkLHT-FMaplnK5OEV7ZoKNpEriUIEMaxUk=',
-                },
-            ],
-        },
-        project: {
-            title: 'Dự án gần đây của chúng tôi',
-            subtitle: 'An Tiêm',
-            items: [
-                {
-                    title: 'Tên Dự Án',
-                    date: '31/12/2022',
-                    content: 'Mô tả',
-                    img: 'https://img.freepik.com/free-photo/ferocious-tiger-family-nature_23-2150767553.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1696291200&semt=ais',
-                },
-                {
-                    title: 'Tên Dự Án',
-                    date: '31/12/2022',
-                    content: 'Mô tả',
-                    img: 'https://img.freepik.com/free-photo/ferocious-tiger-family-nature_23-2150767553.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1696291200&semt=ais',
-                },
-                {
-                    title: 'Tên Dự Án',
-                    date: '31/12/2022',
-                    content: 'Mô tả',
-                    img: 'https://img.freepik.com/free-photo/ferocious-tiger-family-nature_23-2150767553.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1696291200&semt=ais',
-                },
-            ],
-        },
-        blog: {
-            title: 'Cool Green Science',
-            subtitle: 'Antiem',
-            button: 'read our blog',
-        },
-    };
+    const [homeContent, setHomeContent] = useState();
+
+    useEffect(() => {
+        getSetting({
+            page: 'Home Page',
+        })
+            .then((response) => {
+                if (response?.data?.isSuccess === false) {
+                    setHomeContent(homePlaceholder);
+                    return;
+                }
+                console.log(JSON.parse(response));
+                setHomeContent(JSON.parse(response));
+            })
+            .catch((error) => {});
+    }, []);
+
     return (
         <div>
             <div className="pb-5 w-100" id="st-banner">
                 <Swiper
-                    // cssMode={true}
                     navigation={true}
-                    // mousewheel={true}
                     effect={'fade'}
                     autoplay={{
                         delay: 2500,
@@ -102,7 +118,7 @@ export default function Home() {
                     modules={[Navigation, Keyboard, EffectFade, Autoplay]}
                     className="mySwiper"
                 >
-                    {homeContent?.banner?.images?.map?.((item, index) => (
+                    {homeContent?.['banner']?.['images']?.map?.((item, index) => (
                         <SwiperSlide key={index} className="section-1-slide">
                             <img src={item} className="section-1-slide-img" />
                             <div
@@ -119,7 +135,12 @@ export default function Home() {
                         <Fade bottom>
                             <div className="section-2-title">{homeContent?.about?.title}</div>
                             {/* <div className='skeleton'></div> */}
-                            <div className="section-2-content">{homeContent?.about?.content}</div>
+                            <div
+                                className="section-2-content"
+                                dangerouslySetInnerHTML={{
+                                    __html: homeContent?.about?.content,
+                                }}
+                            ></div>
                         </Fade>
                     </Col>
                     <Col sm="12" lg="8" className="section-2-img-form p-0">
@@ -146,7 +167,10 @@ export default function Home() {
                                             <div className="my-1" style={{ fontSize: '25px' }}>
                                                 {item?.title}
                                             </div>
-                                            <p style={{ fontSize: '16px' }}>{item?.content}</p>
+                                            <p
+                                                style={{ fontSize: '16px' }}
+                                                dangerouslySetInnerHTML={{ __html: item?.content }}
+                                            ></p>
                                         </div>
                                     </div>
                                 </Fade>
@@ -191,7 +215,10 @@ export default function Home() {
                                         >
                                             <div className="section-5-project-date">{item?.date}</div>
                                             <div className="section-5-project-name">{item?.title}</div>
-                                            <div className="section-5-project-description">{item?.content}</div>
+                                            <div
+                                                className="section-5-project-description"
+                                                dangerouslySetInnerHTML={{ __html: item?.content }}
+                                            ></div>
                                         </Col>
                                     </Row>
                                 </SwiperSlide>

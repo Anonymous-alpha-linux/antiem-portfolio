@@ -64,7 +64,7 @@ function AssetUpload() {
     return (
         <div>
             <article className="my-3 d-flex justify-content-between">
-                <h3 className="d-inline">{'Your Assets '}</h3>
+                <h3 className="d-inline">{'Tài nguyên '}</h3>
                 {loading && <Spinner></Spinner>}
 
                 <Button
@@ -72,7 +72,7 @@ function AssetUpload() {
                     className="btn ms-auto mb-2 btn-primary-outline"
                     onClick={() => setShowUploadModal((i) => !i)}
                 >
-                    + Upload new assets
+                    + Tải lên tài nguyên
                 </Button>
             </article>
 

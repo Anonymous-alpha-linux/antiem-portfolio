@@ -16,11 +16,11 @@ function Navbar() {
     const [navMenu, setNavMenu] = React.useState(false);
     const navlinks = ['Giới thiệu', 'Dịch vụ', 'Sản phẩm', 'Liên Hệ'];
     window.addEventListener('scroll', function () {
-        var header = this.document.querySelector('.nav');
+        var header = this.document.querySelector('#nav');
         header.classList.toggle('compact', this.window.scrollY > 0);
     });
     return (
-        <div className="px-5 nav">
+        <div className="px-5" id="nav">
             {/* <Login show={login} hide={() => setLogin(false)} />
             <Register show={register} hide={() => setRegister(false)}></Register> */}
             <Row className="w-100">

@@ -3,20 +3,20 @@ const { APIClient } = require('../api_helper');
 const api = new APIClient();
 
 const url = {
-    GET_SETTING: '/api/setting',
-    POST_SETTING: '/api/setting',
+    GET_SETTING: '/api/settings',
+    POST_SETTING: '/api/settings',
 };
 
 export const getSetting = (request, config) => {
     return api.get(`${url.GET_SETTING}`, request, config);
 };
 
-export const postSetting = (body, config) => {
+export const postSetting = ({ page, body }, config) => {
     return api.create(
         url.POST_SETTING,
         {
-            ...body,
-            body: JSON.stringify(body.body),
+            page,
+            body: JSON.stringify(body),
         },
         {
             ...config,

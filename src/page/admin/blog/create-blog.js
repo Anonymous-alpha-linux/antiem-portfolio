@@ -32,6 +32,7 @@ const CreateBlog = () => {
     const [showUploadModal, setShowUploadModal] = React.useState(false);
     const [preferedTags, setPreferedTags] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
+
     let blogStatus = ['Publised', 'Draft', 'Pending'];
 
     const categoryIdsOptionRef = React.useRef();
@@ -175,8 +176,7 @@ const CreateBlog = () => {
     return (
         <>
             <h3 className="mb-3">Post your new blog</h3>
-            <pre>{JSON.stringify(values, 4, 4)}</pre>
-            <pre>{JSON.stringify(errors, 4, 4)}</pre>
+
             <FormikProvider value={validation}>
                 <Form onSubmit={handleSubmit}>
                     <Row>

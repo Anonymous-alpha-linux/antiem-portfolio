@@ -11,31 +11,31 @@ import { PageContentEditor, PageAssetUploader, PageAdminBlogPost } from '../../p
 
 let sidebarMenu = [
     {
-        name: 'Media Library',
+        name: 'Thư viện',
         path: '/admin/media',
         element: <PageAssetUploader></PageAssetUploader>,
         icon: <GoFileMedia></GoFileMedia>,
     },
     {
-        name: 'Web Content',
+        name: 'Nội dung trang',
         path: '/admin/web-content-editor?content=landing+page',
         element: <PageContentEditor></PageContentEditor>,
         icon: <CgWebsite></CgWebsite>,
     },
     {
-        name: 'Blog',
+        name: 'Bài viết',
         path: '/admin/blog',
         element: <PageAdminBlogPost></PageAdminBlogPost>,
         icon: <BsNewspaper></BsNewspaper>,
     },
     {
-        name: 'Contact',
+        name: 'Liên lạc',
         path: '/admin/web-content-editor',
         element: <PageContentEditor></PageContentEditor>,
         icon: <BiSolidPhoneCall></BiSolidPhoneCall>,
     },
     {
-        name: 'Setting',
+        name: 'Cài đặt',
         path: '/admin/setting',
         element: <h2>Admin Setting</h2>,
         icon: <IoIosSettings></IoIosSettings>,
