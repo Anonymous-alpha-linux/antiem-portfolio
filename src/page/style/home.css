@@ -2,7 +2,7 @@
     width: 100%;
 }
 .section-1-slide {
-    height: 800px !important;
+    height: 100vh !important;
     text-align: center;
     position: relative;
 }
@@ -24,14 +24,24 @@
     z-index: -1;
 }
 .section-2-title {
-    font-size: 3vw;
+    font-size: calc(16px + 2vw);
     font-weight: 700;
     top: 0;
+    margin-bottom: 50px;
 }
 .section-2-content {
     width: 80%;
 }
 .section-2-col-1 {
+}
+.section-2-img-form {
+    overflow: hidden;
+}
+.section-2-img {
+    transition: all 0.4s;
+}
+.section-2-img:hover {
+    transform: scale(105%);
 }
 .section-3 {
     /* background-color: #f6f6f6; */
@@ -56,8 +66,18 @@
     background-color: #1a1a1a;
 }
 .section-3-card {
-    overflow: hidden;
     height: 100%;
+}
+.section-3-form {
+    max-width: 400px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+.section-3-card {
+    transition: all 0.3s;
+}
+.section-3-card:hover {
+    transform: translateY(-10px);
 }
 .section-3-card-content {
     width: 100%;
@@ -109,6 +129,7 @@
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.4s;
+    user-select: none;
 }
 .section-4-btn-blog:hover {
     background-color: #1a1a1a;
@@ -132,4 +153,40 @@
 .section-5-project-name {
     font-size: calc(16px + 0.7vw);
     font-weight: 700;
+}
+@media only screen and (max-width: 992px) {
+    .section-2-content {
+        width: 100%;
+        padding: 20px;
+    }
+    .section-2-title {
+        padding-left: 20px;
+        margin-bottom: 0;
+    }
+}
+@media only screen and (max-width: 576px) {
+    .section-5-bg {
+        height: 300px;
+    }
+}
+.skeleton {
+    background-color: #c1c1c1;
+    min-height: 30px;
+    position: relative;
+    overflow: hidden;
+}
+.skeleton::before{
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, #dedede,transparent);
+    transform: translateX(-100%);
+    animation:loading 1s infinite;
+}
+@keyframes loading{
+    100% {
+        transform: translateX(100%);
+    }
 }
