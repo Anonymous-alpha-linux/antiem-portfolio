@@ -121,6 +121,7 @@ export default function Home() {
                     <Col sm="12" lg="4" className="section-2-col-1 p-0">
                         <Fade bottom>
                             <div className="section-2-title">{homeContent?.about?.title}</div>
+                            {/* <div className='skeleton'></div> */}
                             <div className="section-2-content">{homeContent?.about?.content}</div>
                         </Fade>
                     </Col>
