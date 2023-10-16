@@ -7,7 +7,7 @@ import { BiSolidPhoneCall } from 'react-icons/bi';
 import { IoIosSettings } from 'react-icons/io';
 
 // Pages
-import { PageContentEditor, PageAssetUploader, PageAdminBlogPost } from '../../page';
+import { PageContentEditor, PageAssetUploader, PageAdminBlogPost, PageAdminContact } from '../../page';
 
 let sidebarMenu = [
     {
@@ -31,7 +31,7 @@ let sidebarMenu = [
     {
         name: 'Liên lạc',
         path: '/admin/web-content-editor',
-        element: <PageContentEditor></PageContentEditor>,
+        element: <PageAdminContact></PageAdminContact>,
         icon: <BiSolidPhoneCall></BiSolidPhoneCall>,
     },
     {

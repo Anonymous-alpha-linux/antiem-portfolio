@@ -105,8 +105,8 @@ export default function Home() {
     }, []);
 
     return (
-        <div>
-            <div className="pb-5 w-100" id="st-banner">
+        <div id="home-body">
+            <section className="pb-5 w-100" id="st-banner">
                 <Swiper
                     navigation={true}
                     effect={'fade'}
@@ -118,18 +118,19 @@ export default function Home() {
                     modules={[Navigation, Keyboard, EffectFade, Autoplay]}
                     className="mySwiper"
                 >
-                    {homeContent?.['banner']?.['images']?.map?.((item, index) => (
+                    {homeContent?.['banner']?.['images']?.map?.((url, index) => (
                         <SwiperSlide key={index} className="section-1-slide">
-                            <img src={item} className="section-1-slide-img" />
+                            <img src={url} className="section-1-slide-img" />
                             <div
                                 className="section-1-slide-img-filter"
-                                style={{ backgroundImage: `url(${item})` }}
+                                style={{ backgroundImage: `url(${url})` }}
                             ></div>
                         </SwiperSlide>
                     ))}
                 </Swiper>
-            </div>
-            <div className="container" id="st-about">
+            </section>
+
+            <section className="container" id="st-about">
                 <Row className="align-items-center py-5" style={{ position: 'relative' }}>
                     <Col sm="12" lg="4" className="section-2-col-1 p-0">
                         <Fade bottom>
@@ -144,42 +145,49 @@ export default function Home() {
                         </Fade>
                     </Col>
                     <Col sm="12" lg="8" className="section-2-img-form p-0">
-                        <img className="section-2-img" src={homeContent?.about?.images} width={'100%'} />
+                        <img
+                            className="section-2-img"
+                            src={homeContent?.about?.images?.[0]}
+                            width={'100%'}
+                            loading="lazy"
+                        />
                     </Col>
                 </Row>
-                <div className="section-3 pt-5">
-                    <div className="section-3-title-form">
-                        <div className="section-3-subtitle">
-                            <b>{homeContent?.card?.subtitle}</b>
-                        </div>
-                        <div className="section-3-line"></div>
-                        <div className="section-3-title">{homeContent?.card?.title}</div>
+            </section>
+
+            <section className="section-3 container pt-5" id="st-card">
+                <div className="section-3-title-form">
+                    <div className="section-3-subtitle">
+                        <b>{homeContent?.card?.subtitle}</b>
                     </div>
-                    <Row className="section-3-container pb-5">
-                        {homeContent?.card?.items?.map((item, index) => (
-                            <Col sm="12" lg="4" className="section-3-card my-2 px-0" key={index}>
-                                <Fade bottom distance="7%" duration={500 + index * 600}>
-                                    <div className="section-3-form">
-                                        <div className="section-3-card-img">
-                                            <img src={item?.img} height={'100%'} width={'100%'} />
-                                        </div>
-                                        <div className="section-3-card-content">
-                                            <div className="my-1" style={{ fontSize: '25px' }}>
-                                                {item?.title}
-                                            </div>
-                                            <p
-                                                style={{ fontSize: '16px' }}
-                                                dangerouslySetInnerHTML={{ __html: item?.content }}
-                                            ></p>
-                                        </div>
-                                    </div>
-                                </Fade>
-                            </Col>
-                        ))}
-                    </Row>
+                    <div className="section-3-line"></div>
+                    <div className="section-3-title">{homeContent?.card?.title}</div>
                 </div>
-            </div>
-            <div className="section-5 mt-5">
+                <Row className="section-3-container pb-5">
+                    {homeContent?.card?.items?.map((item, index) => (
+                        <Col sm="12" lg="4" className="section-3-card my-2 px-0" key={index}>
+                            <Fade bottom distance="7%" duration={500 + index * 600}>
+                                <div className="section-3-form">
+                                    <div className="section-3-card-img">
+                                        <img src={item?.img} height={'100%'} width={'100%'} />
+                                    </div>
+                                    <div className="section-3-card-content">
+                                        <div className="my-1" style={{ fontSize: '25px' }}>
+                                            {item?.title}
+                                        </div>
+                                        <p
+                                            style={{ fontSize: '16px' }}
+                                            dangerouslySetInnerHTML={{ __html: item?.content }}
+                                        ></p>
+                                    </div>
+                                </div>
+                            </Fade>
+                        </Col>
+                    ))}
+                </Row>
+            </section>
+
+            <section className="section-5 mt-5" id="st-project">
                 <div className="section-5-bg py-5">
                     <div className="container">
                         <div className="d-flex align-items-center gap-3 mt-5 mb-3">
@@ -243,8 +251,9 @@ export default function Home() {
                         </Row>
                     </Fade>
                 </div>
-            </div>
-            <div className="section-4">
+            </section>
+
+            <section className="section-4" id="st-blog">
                 <div className="section-4-img-frame">
                     <img
                         src="https://t3.ftcdn.net/jpg/03/77/38/02/360_F_377380244_Z7AOXqVIDzLb4XJQ7RXfGnEJrcwhcBp1.jpg"
@@ -261,7 +270,7 @@ export default function Home() {
                         </Fade>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
     );
 }

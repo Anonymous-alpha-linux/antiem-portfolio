@@ -28,11 +28,18 @@ function AssetUpload() {
 
     const handleDelete = (id) => {
         // API Call Delete Asset
-        setState((i) => ({
-            ...i,
-            uploads: i.uploads.filter((_, ps) => ps !== id),
-        }));
-        deleteMedia(id);
+        setLoading(true);
+        deleteMedia(uploads?.[id]?.assetId)
+            .then((response) => {
+                setState((i) => ({
+                    ...i,
+                    uploads: i.uploads.filter((_, ps) => ps !== id),
+                }));
+                setLoading(false);
+            })
+            .catch((error) => {
+                setLoading(false);
+            });
     };
 
     function APICallMediaList(request, callback) {
@@ -42,8 +49,10 @@ function AssetUpload() {
                 setState((i) => ({
                     ...i,
                     uploads: response?.list?.map((i) => ({
+                        assetId: i.assetId,
                         assetLink: i.assetLink,
                     })),
+                    totalAsset: response?.total || 0,
                 }));
                 callback?.(response?.list);
                 setLoading(false);
@@ -119,12 +128,12 @@ function AssetUpload() {
                 }}
             ></UploadModal>
 
-            <Row className="m-2" style={{ border: '1px solid #000', minHeight: '500px' }}>
+            <Row className="m-2" style={{ border: '1px solid #000', minHeight: '500px', borderRadius: '1rem' }}>
                 {uploads?.map?.((upload, id) => {
                     return (
                         <Col xs="12" sm="6" md="4" lg="3" xxl="2" key={id} className="mt-2 mb-1 position-relative">
                             <FaTimes
-                                onClick={() => handleDelete(upload?.assetId)}
+                                onClick={() => handleDelete(id)}
                                 style={{
                                     cursor: 'pointer',
                                     position: 'absolute',

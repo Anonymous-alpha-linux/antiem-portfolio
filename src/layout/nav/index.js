@@ -7,20 +7,26 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { LuMenuSquare } from 'react-icons/lu';
 //Css
 import '../nav/nav.css';
+import { useLayoutEffect } from 'react';
 // import Login from '../../pages/public/login';
 // import Register from '../../pages/public/register';
 
 function Navbar() {
-    const [login, setLogin] = React.useState(false);
-    const [register, setRegister] = React.useState(false);
     const [navMenu, setNavMenu] = React.useState(false);
     const navlinks = ['Giới thiệu', 'Dịch vụ', 'Sản phẩm', 'Liên Hệ'];
-    window.addEventListener('scroll', function () {
-        var header = this.document.querySelector('#nav');
-        header.classList.toggle('compact', this.window.scrollY > 0);
-    });
+
+    useLayoutEffect(() => {
+        window.addEventListener('scroll', function () {
+            var header = this.document.querySelector('#nav');
+            header.classList.toggle('compact', this.window.scrollY > 0);
+        });
+        return () => {
+            window.removeEventListener('scroll', () => {});
+        };
+    }, []);
+
     return (
-        <div className="px-5" id="nav">
+        <div className="px-5 nav-component" id="nav">
             {/* <Login show={login} hide={() => setLogin(false)} />
             <Register show={register} hide={() => setRegister(false)}></Register> */}
             <Row className="w-100">
