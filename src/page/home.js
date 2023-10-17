@@ -34,12 +34,12 @@ let homePlaceholder = {
     card: {
         title: 'Dịch vụ của chúng tôi',
         subtitle: 'An Tiêm',
-        items: [
+        children: [
             {
                 title: 'Animal Speech Topics',
                 content:
                     'Writing an exciting and thoughtful speech requires one to select a good topic, research it thoroughly, and formation of individual opinions to express the same.',
-                img: 'https://media.istockphoto.com/id/505625400/photo/toucan-on-the-branch.webp?b=1&s=170667a&w=0&k=20&c=xkza6GPx2UkLHT-FMaplnK5OEV7ZoKNpEriUIEMaxUk=',
+                image: 'https://media.istockphoto.com/id/505625400/photo/toucan-on-the-branch.webp?b=1&s=170667a&w=0&k=20&c=xkza6GPx2UkLHT-FMaplnK5OEV7ZoKNpEriUIEMaxUk=',
             },
             {
                 title: 'Animal Speech Topics',
@@ -164,12 +164,12 @@ export default function Home() {
                     <div className="section-3-title">{homeContent?.card?.title}</div>
                 </div>
                 <Row className="section-3-container pb-5">
-                    {homeContent?.card?.items?.map((item, index) => (
+                    {homeContent?.card?.children?.map((item, index) => (
                         <Col sm="12" lg="4" className="section-3-card my-2 px-0" key={index}>
                             <Fade bottom distance="7%" duration={500 + index * 600}>
                                 <div className="section-3-form">
                                     <div className="section-3-card-img">
-                                        <img src={item?.img} height={'100%'} width={'100%'} />
+                                        <img src={item?.image} height={'100%'} width={'100%'} />
                                     </div>
                                     <div className="section-3-card-content">
                                         <div className="my-1" style={{ fontSize: '25px' }}>
@@ -211,17 +211,17 @@ export default function Home() {
                             modules={[Navigation, Autoplay]}
                             className="mySwiper"
                         >
-                            {homeContent?.project?.items?.map((item, index) => (
+                            {homeContent?.project?.children?.map((item, index) => (
                                 <SwiperSlide key={index} style={{ overflow: 'hidden' }}>
                                     <Row className="pb-4">
                                         <Col className="p-0">
-                                            <img src={item?.img} width={'100%'} />
+                                            <img src={item?.image} width={'100%'} />
                                         </Col>
                                         <Col
                                             className="d-flex justify-content-center align-items-center flex-column gap-4 p-0"
                                             style={{ background: 'white' }}
                                         >
-                                            <div className="section-5-project-date">{item?.date}</div>
+                                            <div className="section-5-project-date">{item?.subtitle}</div>
                                             <div className="section-5-project-name">{item?.title}</div>
                                             <div
                                                 className="section-5-project-description"
@@ -235,14 +235,14 @@ export default function Home() {
                     </Fade>
                     <Fade bottom istance="10%">
                         <Row style={{ padding: '0 10px' }}>
-                            {homeContent?.project?.items?.map((item, index) => (
+                            {homeContent?.project?.children?.map((item, index) => (
                                 <Col xs="6" sm="6" lg="4" className="mb-2" key={index}>
                                     <Row>
                                         <Col className="p-0">
-                                            <img src={item?.img} width={'100%'} />
+                                            <img src={item?.image} width={'100%'} />
                                         </Col>
                                         <Col>
-                                            <div className="section-5-project-date">{item?.date}</div>
+                                            <div className="section-5-project-date">{item?.subtitle}</div>
                                             <div style={{ fontWeight: '700' }}>{item?.title}</div>
                                         </Col>
                                     </Row>

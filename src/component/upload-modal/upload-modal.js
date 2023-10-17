@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 // Components
-import { Button, Col, Form, Modal, ProgressBar, Row, Tab, Tabs } from 'react-bootstrap';
+import { Button, Col, Form, Modal, ProgressBar, Row, Spinner, Tab, Tabs } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
 // Components - Icon
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
@@ -11,7 +11,7 @@ import * as yup from 'yup';
 // App Configurations
 import config from '../../config';
 
-function UploadModal({ onCopyLink, show, onHide, onSelected, APICallAssets, APIPostAsset }) {
+function UploadModal({ onCopyLink, show, onHide, onSelected, loading, APICallAssets, APIPostAsset }) {
     const [{ uploads, total }, setState] = useState({
         uploads: [],
         total: 0,
@@ -76,18 +76,26 @@ function UploadModal({ onCopyLink, show, onHide, onSelected, APICallAssets, APIP
     const [recents, setRecents] = useState([]);
     const [take] = useState(10);
     const [page, setPage] = useState(1);
+    const [innerLoading, setInnerLoading] = useState(loading);
 
     useEffect(() => {
         // API call get uploads here
         APICallAssets?.({
             take,
             page,
-            setUploads: (uploads) =>
+            setUploads: (uploads, total) => {
                 setState((i) => {
-                    return { ...i, uploads };
-                }),
+                    return { ...i, uploads, total };
+                });
+            },
         });
     }, [take, page]);
+
+    useEffect(() => {
+        if (loading !== null) setInnerLoading(loading);
+    }, [loading]);
+
+    console.log(total);
 
     return (
         <Modal
@@ -109,6 +117,21 @@ function UploadModal({ onCopyLink, show, onHide, onSelected, APICallAssets, APIP
                 <Tabs className="mb-3">
                     <Tab eventKey="library" title="Library">
                         <Row id="asset-list">
+                            {innerLoading && (
+                                <Col
+                                    className="position-relative mb-2 d-flex justify-content-center align-items-center"
+                                    xs="12"
+                                    sm="6"
+                                    md="4"
+                                    lg="3"
+                                    xxl="2"
+                                    style={{
+                                        background: '#b6b5b5',
+                                    }}
+                                >
+                                    <Spinner></Spinner>
+                                </Col>
+                            )}
                             {uploads?.map?.((upload, index) => {
                                 return (
                                     <Col
@@ -119,9 +142,8 @@ function UploadModal({ onCopyLink, show, onHide, onSelected, APICallAssets, APIP
                                         lg="3"
                                         xxl="2"
                                         key={index}
-                                        style={{ height: 'fit-content' }}
                                     >
-                                        <div className="position-relative">
+                                        <div className="position-relative img-container-active-backdrop">
                                             <img
                                                 className="position-relative"
                                                 src={upload?.assetLink}
@@ -129,7 +151,7 @@ function UploadModal({ onCopyLink, show, onHide, onSelected, APICallAssets, APIP
                                                 width={'100%'}
                                             ></img>
                                             <div
-                                                className="position-absolute top-0 start-0"
+                                                className="position-absolute top-0 start-0 img-backdrop"
                                                 style={{
                                                     background: 'linear-gradient(45deg, black, transparent)',
                                                     width: '100%',
@@ -174,7 +196,7 @@ function UploadModal({ onCopyLink, show, onHide, onSelected, APICallAssets, APIP
 
                     <Tab eventKey="upload" title="Upload new asset">
                         <Form onSubmit={validation.handleSubmit} className="mb-2">
-                            <div className="text-center p-2" style={{ border: '2px solid var(--clr-border)' }}>
+                            <div className="text-center p-2" style={{ border: '2px solid #010101' }}>
                                 <h3>Drop Files to upload</h3>
                                 or
                                 <Button

@@ -3,9 +3,10 @@ import React from 'react';
 import { Button, Form, FormGroup } from 'react-bootstrap';
 import { getSetting, postSetting } from '../../../api';
 import { useEffect } from 'react';
-import { AiOutlineFacebook, AiOutlineInstagram, AiOutlinePhone } from 'react-icons/ai';
+import { AiOutlineFacebook, AiOutlineInstagram, AiOutlinePhone, AiOutlineUpload } from 'react-icons/ai';
 import { FaTelegramPlane, FaTiktok } from 'react-icons/fa';
 import { useState } from 'react';
+import { FileUploader } from '../../../container/file-uploader';
 
 function ContactInformationEditor() {
     // API Layer
@@ -35,6 +36,7 @@ function ContactInformationEditor() {
         telegram: '',
         tiktok: '',
     });
+    const [uploadModal, setUploadModal] = useState(false);
     const validation = useFormik({
         initialValues: {
             phone: initialValues?.phone,
@@ -43,6 +45,7 @@ function ContactInformationEditor() {
             zalo: initialValues?.zalo,
             telegram: initialValues?.telegram,
             tiktok: initialValues?.tiktok,
+            logo: initialValues?.logo || '',
         },
         enableReinitialize: true,
         onSubmit: (values, formikHelpers) => {
@@ -56,7 +59,7 @@ function ContactInformationEditor() {
         APICallGetContact();
     }, []);
 
-    const { values, errors, handleChange, handleSubmit, handleBlur } = validation;
+    const { values, errors, setFieldValue, handleChange, handleSubmit, handleBlur } = validation;
 
     // Component Layer
     return (
@@ -65,7 +68,7 @@ function ContactInformationEditor() {
             <div className="sidebar-children-box">
                 <FormikProvider value={validation}>
                     <Form onSubmit={handleSubmit}>
-                        <FormGroup id="form-control-phone">
+                        <FormGroup id="form-control-phone" className="mb-2">
                             <Form.Label className="fw-bold">
                                 <AiOutlinePhone className="me-2"></AiOutlinePhone>
                                 <span className="align-middle">Phone</span>
@@ -79,7 +82,7 @@ function ContactInformationEditor() {
                             <Form.Control.Feedback type="invalid">{errors?.phone}</Form.Control.Feedback>
                         </FormGroup>
 
-                        <FormGroup id="form-control-fb">
+                        <FormGroup id="form-control-fb" className="mb-2">
                             <Form.Label className="fw-bold">
                                 <AiOutlineFacebook className="me-2"></AiOutlineFacebook>
                                 <span className="align-middle">Facebook</span>
@@ -92,7 +95,7 @@ function ContactInformationEditor() {
                             ></Form.Control>
                         </FormGroup>
 
-                        <FormGroup id="form-control-ins">
+                        <FormGroup id="form-control-ins" className="mb-2">
                             <Form.Label className="fw-bold">
                                 <AiOutlineInstagram className="me-2"></AiOutlineInstagram>
                                 <span className="align-middle">Instagram</span>
@@ -105,7 +108,7 @@ function ContactInformationEditor() {
                             ></Form.Control>
                         </FormGroup>
 
-                        <FormGroup id="form-control-zalo">
+                        <FormGroup id="form-control-zalo" className="mb-2">
                             <Form.Label className="fw-bold">Zalo</Form.Label>
                             <Form.Control
                                 name="zalo"
@@ -115,7 +118,7 @@ function ContactInformationEditor() {
                             ></Form.Control>
                         </FormGroup>
 
-                        <FormGroup id="form-control-telegram">
+                        <FormGroup id="form-control-telegram " className="mb-2">
                             <Form.Label className="fw-bold">
                                 <FaTelegramPlane className="me-2"></FaTelegramPlane>
                                 <span className="align-middle">Telegram</span>
@@ -128,7 +131,7 @@ function ContactInformationEditor() {
                             ></Form.Control>
                         </FormGroup>
 
-                        <FormGroup id="form-control-tiktok">
+                        <FormGroup id="form-control-tiktok" className="mb-2">
                             <Form.Label className="fw-bold">
                                 <FaTiktok className="me-2"></FaTiktok>
                                 <span className="align-middle">Tiktok</span>
@@ -141,7 +144,38 @@ function ContactInformationEditor() {
                             ></Form.Control>
                         </FormGroup>
 
-                        <div className="my-2">
+                        <FormGroup id="form-control-logo" className="mb-2">
+                            <Form.Label className="fw-bold">
+                                <FaTiktok className="me-2"></FaTiktok>
+                                <span className="align-middle">Logo</span>
+                            </Form.Label>
+
+                            <div
+                                onClick={() => {
+                                    setUploadModal(true);
+                                }}
+                            >
+                                <img src={values.logo} width={'280px'}></img>
+                                <div className="border" style={{ cursor: 'pointer' }}>
+                                    <AiOutlineUpload className="me-2"></AiOutlineUpload>
+                                    <span className="align-middle">Upload Logo</span>
+                                </div>
+                            </div>
+
+                            <FileUploader
+                                show={uploadModal}
+                                onHide={() => setUploadModal(false)}
+                                onCopyLink={(link) => {
+                                    setFieldValue('logo', link);
+                                    setUploadModal(false);
+                                }}
+                                onSelected={() => {}}
+                                afterGetMediaList={(response) => {}}
+                                afterPostNewMedia={(newMedia) => {}}
+                            ></FileUploader>
+                        </FormGroup>
+
+                        <div className="my-5">
                             <Button type="submit" className="me-2" variant="outline-success">
                                 Published Contact
                             </Button>
