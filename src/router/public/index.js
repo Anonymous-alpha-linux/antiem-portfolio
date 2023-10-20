@@ -1,6 +1,16 @@
+import { Outlet } from 'react-router';
 import Footer from '../../layout/footer';
 import Navbar from '../../layout/nav';
 import Home from '../../page/home';
+
+export const list_pages = [
+    {
+        name: 'Home Page',
+        display_name: 'Home Page',
+        path: '',
+        element: <Home />,
+    },
+];
 
 export const publicRoutes = [
     {
@@ -8,17 +18,10 @@ export const publicRoutes = [
         element: (
             <>
                 <Navbar />
-                <Home />
+                <Outlet />
                 <Footer />
             </>
         ),
-    },
-    {
-        path: 'home',
-        element: <h2>Trang chủ</h2>,
-    },
-    {
-        path: 'table-of-content',
-        element: <h2>Table of content</h2>,
+        children: list_pages,
     },
 ];

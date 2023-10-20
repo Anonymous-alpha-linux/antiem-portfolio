@@ -20,18 +20,8 @@ function UploadModal({ onCopyLink, show, onHide, onSelected, APICallAssets, APIP
 
     function postAssetToServer(file, index) {
         // API call post assets here
-        // dispatch(
-        //     postAsset(values.file, {
-        //         onUploadProgress: (event) => {
-        //             console.log('Uploaded ', event);
-        //             setProgressPercent(Math.round(100 * event.loaded) / event.total);
-        //         },
-        //         onDownloadProgress: (event) => {
-        //             console.log('Downloaded ', event);
-        //         },
-        //     }),
-        // );
         APIPostAsset({
+            file,
             setProgressPercent: (percentage) =>
                 setRecents((lst) => {
                     return lst?.map?.((i, ps) => {
@@ -43,6 +33,9 @@ function UploadModal({ onCopyLink, show, onHide, onSelected, APICallAssets, APIP
                             : i;
                     });
                 }),
+            setNewUpload: (newUpload) => {
+                setState((i) => ({ ...i, uploads: [...i.uploads, newUpload] }));
+            },
         });
     }
 
@@ -98,7 +91,7 @@ function UploadModal({ onCopyLink, show, onHide, onSelected, APICallAssets, APIP
 
     return (
         <Modal
-            size="xxl"
+            size="lg"
             show={show}
             onHide={onHide}
             animation={true}
@@ -116,8 +109,7 @@ function UploadModal({ onCopyLink, show, onHide, onSelected, APICallAssets, APIP
                 <Tabs className="mb-3">
                     <Tab eventKey="library" title="Library">
                         <Row id="asset-list">
-                            {(uploads || []).map((upload, index) => {
-                                console.log(upload);
+                            {uploads?.map?.((upload, index) => {
                                 return (
                                     <Col
                                         className="position-relative mb-2"
@@ -134,6 +126,7 @@ function UploadModal({ onCopyLink, show, onHide, onSelected, APICallAssets, APIP
                                                 className="position-relative"
                                                 src={upload?.assetLink}
                                                 alt={'asset' + index}
+                                                width={'100%'}
                                             ></img>
                                             <div
                                                 className="position-absolute top-0 start-0"
@@ -226,9 +219,9 @@ function UploadModal({ onCopyLink, show, onHide, onSelected, APICallAssets, APIP
                                                 ]);
                                             };
 
-                                            fileReader.readAsDataURL(file);
-
                                             postAssetToServer(file, recents.length);
+
+                                            fileReader.readAsDataURL(file);
                                         }
                                     }}
                                     isInvalid={validation.touched.file && validation.values.file}

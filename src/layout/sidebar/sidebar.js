@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { AiOutlineRight } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import './style.css';
 import { Col, Row } from 'react-bootstrap';
@@ -6,6 +7,8 @@ import { Col, Row } from 'react-bootstrap';
 function Sidebar({ children, menu }) {
     const sidebarMenuRef = useRef(null);
     let [sidebarChildrenStyle, setSidebarChildStyle] = useState(null);
+
+    const [openSubTab, setOpenSubtab] = useState(null);
 
     useEffect(() => {
         if (sidebarMenuRef.current) {
@@ -34,6 +37,16 @@ function Sidebar({ children, menu }) {
                                     <Row>
                                         <Col xs="auto">{restItem?.icon}</Col>
                                         <Col>{name}</Col>
+                                        <Col xs="auto" style={{ alignSelf: 'flex-end' }}>
+                                            <AiOutlineRight
+                                                onClick={() => setOpenSubtab(index)}
+                                                style={{
+                                                    float: 'right',
+                                                    transform: 'rotate(90deg)',
+                                                    transformOrigin: 'center',
+                                                }}
+                                            ></AiOutlineRight>
+                                        </Col>
                                     </Row>
                                 </Link>
                                 {!!restItem?.subs && (
@@ -53,7 +66,7 @@ function Sidebar({ children, menu }) {
                     })}
                 </ul>
             </div>
-            <div className="sidebar-children p-4" style={sidebarChildrenStyle}>
+            <div className="sidebar-children" style={sidebarChildrenStyle}>
                 {children}
             </div>
         </section>

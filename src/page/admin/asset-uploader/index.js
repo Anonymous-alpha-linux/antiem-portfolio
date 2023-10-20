@@ -12,6 +12,9 @@ import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 // Style
 import './style.css';
 
+// API
+import { deleteMedia, getMedias, postMedia } from '../../../api';
+
 function AssetUpload() {
     const [showUploadModal, setShowUploadModal] = React.useState(false);
 
@@ -25,47 +28,60 @@ function AssetUpload() {
 
     const handleDelete = (id) => {
         // API Call Delete Asset
-        // dispatch(deleteAsset(id));
-        setState((i) => ({
-            ...i,
-            uploads: i.uploads.filter((_, ps) => ps !== id),
-        }));
+        setLoading(true);
+        deleteMedia(uploads?.[id]?.assetId)
+            .then((response) => {
+                setState((i) => ({
+                    ...i,
+                    uploads: i.uploads.filter((_, ps) => ps !== id),
+                }));
+                setLoading(false);
+            })
+            .catch((error) => {
+                setLoading(false);
+            });
     };
+
+    function APICallMediaList(request, callback) {
+        setLoading(true);
+        getMedias(request)
+            .then((response) => {
+                setState((i) => ({
+                    ...i,
+                    uploads: response?.list?.map((i) => ({
+                        assetId: i.assetId,
+                        assetLink: i.assetLink,
+                    })),
+                    totalAsset: response?.total || 0,
+                }));
+                callback?.(response?.list);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setLoading(false);
+            });
+    }
 
     useEffect(() => {
         // API Call Get Assets list
-        // dispatch(getAssetList({ skip: page, take: take }));
-        let response = [
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAGbzrhpTi4Q0o5o0JSRVDSZ6zifJth2yxXYg26zgW&s',
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52qqyY2Mosgxt-Pt00pZy4TqIhCanFTwyLwC-D0z5&s',
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDROGYaiYK8k3pLOWnsrA9jJlRGsKOEAhAxvPWw8Ib&s',
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNofDeymYIece5QEl4VAXCCtruE1skQo3TGRZuRoWJ&s',
-        ];
-        setLoading(true);
-
-        setTimeout(() => {
-            setState((i) => ({
-                ...i,
-                uploads: response.map((i) => ({
-                    assetLink: i,
-                })),
-            }));
-
-            setLoading(false);
-        }, 3000);
+        APICallMediaList({
+            skip: page,
+            take,
+        });
     }, [take, page]);
 
     return (
         <div>
             <article className="my-3 d-flex justify-content-between">
-                <h3 className="d-inline">Your Assets</h3>
+                <h3 className="d-inline">{'Tài nguyên '}</h3>
                 {loading && <Spinner></Spinner>}
+
                 <Button
-                    variant="outline"
+                    variant="outline-dark"
                     className="btn ms-auto mb-2 btn-primary-outline"
                     onClick={() => setShowUploadModal((i) => !i)}
                 >
-                    + Upload new assets
+                    + Tải lên tài nguyên
                 </Button>
             </article>
 
@@ -75,56 +91,94 @@ function AssetUpload() {
                 onHide={() => setShowUploadModal(false)}
                 onCopyLink={(link) => {}}
                 onSelected={(item) => {}}
-                APIPostAsset={({ file, setProgressPercent }) => {
-                    let percentage = 10;
-
-                    let interval = setInterval(() => {
-                        if (percentage >= 100) {
-                            clearInterval(interval);
-                            return;
-                        }
-                        percentage += 30;
-                        setProgressPercent?.(percentage);
-                    }, 1000);
+                APIPostAsset={({ file, setProgressPercent, setNewUpload }) => {
+                    setLoading(true);
+                    postMedia(
+                        {
+                            file,
+                        },
+                        {
+                            onUploadProgress: function (progressEvent) {
+                                setProgressPercent(Math.round(100 * progressEvent.loaded) / progressEvent.total);
+                            },
+                        },
+                    )
+                        .then((response) => {
+                            setNewUpload({
+                                assetLink: response.assetLink,
+                            });
+                            setState((i) => ({
+                                ...i,
+                                uploads: response,
+                            }));
+                            setLoading(false);
+                        })
+                        .catch((error) => {
+                            setLoading(false);
+                        });
                 }}
                 APICallAssets={({ page, take, setUploads }) => {
-                    let response = [
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAGbzrhpTi4Q0o5o0JSRVDSZ6zifJth2yxXYg26zgW&s',
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52qqyY2Mosgxt-Pt00pZy4TqIhCanFTwyLwC-D0z5&s',
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDROGYaiYK8k3pLOWnsrA9jJlRGsKOEAhAxvPWw8Ib&s',
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNofDeymYIece5QEl4VAXCCtruE1skQo3TGRZuRoWJ&s',
-                    ];
-
-                    setTimeout(() => {
-                        setUploads(
-                            response.map((i) => ({
-                                assetLink: i,
-                            })),
-                        );
-                    }, 3000);
+                    APICallMediaList(
+                        {
+                            skip: page,
+                            take,
+                        },
+                        (uploads) => setUploads(uploads),
+                    );
                 }}
             ></UploadModal>
 
-            <Row style={{ border: '1px solid #000', minHeight: '500px' }}>
-                {loading && (
-                    <Col>
-                        {/* Coding the lazy loading of image here */}
-                        <div style={{ width: '200px', height: '120px', backgroundColor: 'brown' }}></div>
-                    </Col>
-                )}
-
-                {(uploads || [])?.map((upload, id) => {
+            <Row className="m-2" style={{ border: '1px solid #000', minHeight: '500px', borderRadius: '1rem' }}>
+                {uploads?.map?.((upload, id) => {
                     return (
-                        <Col xs="12" sm="6" md="4" lg="3" xxl="2" key={id} className="mb-2">
+                        <Col xs="12" sm="6" md="4" lg="3" xxl="2" key={id} className="mt-2 mb-1 position-relative">
                             <FaTimes
-                                onClick={() => handleDelete(upload?.assetId)}
-                                style={{ cursor: 'pointer' }}
+                                onClick={() => handleDelete(id)}
+                                style={{
+                                    cursor: 'pointer',
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                    transform: 'translate(-100%)',
+                                }}
                             ></FaTimes>
-                            <img src={upload?.assetLink} alt={'assets' + id} style={{ cursor: 'pointer' }}></img>
+                            <img
+                                src={upload?.assetLink}
+                                alt={'assets' + id}
+                                style={{ cursor: 'pointer' }}
+                                width="100%"
+                            ></img>
                         </Col>
                     );
                 })}
+
+                {loading && (
+                    <Col xs="12" sm="6" md="4" lg="3" xxl="2" className="mt-2 mb-1">
+                        {/* Coding the lazy loading of image here */}
+                        <div
+                            style={{
+                                width: '100%',
+                                height: '100%',
+
+                                backgroundColor: '#cdc9c9',
+                                position: 'relative',
+                            }}
+                        >
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    transform: 'translate(-50%, -50%)',
+                                }}
+                            >
+                                <Spinner></Spinner>
+                            </div>
+                        </div>
+                    </Col>
+                )}
             </Row>
+
             <ReactPaginate
                 previousLabel={<AiOutlineLeft></AiOutlineLeft>}
                 nextLabel={<AiOutlineRight></AiOutlineRight>}

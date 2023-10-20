@@ -7,37 +7,35 @@ import { BiSolidPhoneCall } from 'react-icons/bi';
 import { IoIosSettings } from 'react-icons/io';
 
 // Pages
-// Page - Admin
-import { PageContentEditor, PageAssetUploader } from '../../page';
-// Page - Public
+import { PageContentEditor, PageAssetUploader, PageAdminBlogPost, PageAdminContact } from '../../page';
 
 let sidebarMenu = [
     {
-        name: 'Media Library',
+        name: 'Thư viện',
         path: '/admin/media',
         element: <PageAssetUploader></PageAssetUploader>,
         icon: <GoFileMedia></GoFileMedia>,
     },
     {
-        name: 'Web Content',
+        name: 'Nội dung trang',
         path: '/admin/web-content-editor?content=landing+page',
         element: <PageContentEditor></PageContentEditor>,
         icon: <CgWebsite></CgWebsite>,
     },
     {
-        name: 'Blog',
+        name: 'Bài viết',
         path: '/admin/blog',
-        element: <h2>Blog</h2>,
+        element: <PageAdminBlogPost></PageAdminBlogPost>,
         icon: <BsNewspaper></BsNewspaper>,
     },
     {
-        name: 'Contact',
+        name: 'Liên lạc',
         path: '/admin/web-content-editor',
-        element: <h2>Website Contact</h2>,
+        element: <PageAdminContact></PageAdminContact>,
         icon: <BiSolidPhoneCall></BiSolidPhoneCall>,
     },
     {
-        name: 'Setting',
+        name: 'Cài đặt',
         path: '/admin/setting',
         element: <h2>Admin Setting</h2>,
         icon: <IoIosSettings></IoIosSettings>,

@@ -1,15 +1,11 @@
 import React from 'react';
-
 // List of pages need to edit
-import {} from '../../../page';
-
+import { list_pages } from '../../../router/public';
 // Component
 import { TextEditor, UploadModal } from '../../../component';
-import { Button, Dropdown, Form, Modal } from 'react-bootstrap';
-
+import { Button, Col, Dropdown, Form, Modal, Row } from 'react-bootstrap';
 // Component-Form
 import { FieldArray, FormikProvider, useFormik } from 'formik';
-
 // Component-Icons
 import { FaTimes } from 'react-icons/fa';
 import { BiAddToQueue } from 'react-icons/bi';
@@ -18,38 +14,12 @@ import { Link, useSearchParams, createSearchParams } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation, Mousewheel, Keyboard } from 'swiper/modules';
 import 'swiper/css/navigation';
-
 // Custom style
 import './style.css';
 import 'react-quill/dist/quill.snow.css';
+import { getMedias, getSetting, postMedia, postSetting } from '../../../api';
 
-let list_of_websites = [
-    {
-        name: 'landing page',
-        display_name: 'Landing Page',
-        component: (
-            <section id="st-section-1">
-                <h2>Sample title</h2>
-                <p>Sample Subtitle</p>
-            </section>
-        ),
-    },
-    {
-        name: 'menu_1',
-        display_name: 'Danh mục 1',
-        component: <></>,
-    },
-    {
-        name: 'menu_2',
-        display_name: 'Danh mục 2',
-        component: <></>,
-    },
-    {
-        name: 'menu_3',
-        display_name: 'Danh mục 3',
-        component: <></>,
-    },
-];
+let list_of_websites = list_pages;
 
 function ContentEditor() {
     const [params] = useSearchParams();
@@ -63,11 +33,10 @@ function ContentEditor() {
     return (
         <section>
             <div id="content-editor-heading">
-                <h3>WEB CONTENT EDITOR</h3>
-                <i>Edit the title, subtitle and message in each section of page</i>
-                <div className="mb-3 border border-1">
-                    <ListWebDropdownOptions></ListWebDropdownOptions>
-                </div>
+                <h3>Trang</h3>
+                <i>Bạn có tổng cộng {list_of_websites.length} trang để chỉnh sửa</i>
+
+                <ListWebDropdownOptions></ListWebDropdownOptions>
             </div>
 
             <div id="content-editor-body">
@@ -89,6 +58,7 @@ function PageDemonstration({ nameOfPage }) {
         page: nameOfPage,
         show: false,
     });
+    const [pageContent, setPageContent] = React.useState(null);
 
     React.useEffect(() => {
         const elements = document.querySelectorAll('[id*="st-"]');
@@ -110,6 +80,18 @@ function PageDemonstration({ nameOfPage }) {
             });
         });
 
+        getSetting({
+            page: nameOfPage,
+        })
+            .then((response) => {
+                if (response?.data?.isSuccess === false) {
+                    setPageContent({});
+                    return;
+                }
+                setPageContent(JSON.parse(response));
+            })
+            .catch((error) => {});
+
         return () => {};
     }, [nameOfPage]);
 
@@ -120,11 +102,22 @@ function PageDemonstration({ nameOfPage }) {
                 onHide={() => setEditTool((e) => (e.show = false))}
                 sectionName={editTool.sectionName}
                 page={editTool.page}
+                content={pageContent?.[editTool?.sectionName]}
+                APICallPostSetting={(sectionName, sectionContentObj) => {
+                    // console.log(sectionName, sectionContentObj);
+                    postSetting({
+                        page: nameOfPage,
+                        body: {
+                            ...pageContent,
+                            [sectionName]: sectionContentObj,
+                        },
+                    });
+                }}
             ></EditTool>
 
             <div style={{ overflowX: 'scroll' }}>
                 {list_of_websites.map((website) => {
-                    return nameOfPage === website.name && website.component;
+                    return nameOfPage === website.name && website.element;
                 })}
             </div>
         </>
@@ -137,9 +130,9 @@ function ListWebDropdownOptions() {
         textDecoration: 'none',
     };
     return (
-        <Dropdown>
-            <Dropdown.Toggle id="dropdown-basic" variant="outline" className="btn-primary-outline">
-                Select page to edit
+        <Dropdown className="my-2">
+            <Dropdown.Toggle id="dropdown-basic" variant="outline-dark" className="btn-primary-outline">
+                Chọn trang để chỉnh sửa
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
@@ -169,7 +162,7 @@ function ListWebDropdownOptions() {
                         }}
                         style={linkStyle}
                     >
-                        CONTACT
+                        Liên lạc
                     </Link>
                 </Dropdown.Item>
             </Dropdown.Menu>
@@ -186,30 +179,21 @@ function ContactInformation() {
     );
 }
 
-function EditTool({ sectionName, page, show, onHide, content }) {
+function EditTool({ sectionName, page, show, onHide, content, APICallPostSetting }) {
     const validation = useFormik({
         initialValues: {
-            title: content?.[sectionName]?.title,
-            subtitle: content?.[sectionName]?.subtitle,
-            content: content?.[sectionName]?.content,
-            images: content?.[sectionName]?.images || [],
-            childImage: content?.[sectionName]?.childImage || [],
-            child: content?.[sectionName]?.child || [],
+            title: content?.title,
+            subtitle: content?.subtitle,
+            content: content?.content,
+            images: content?.images || [],
+            childImage: content?.childImage || [],
+            child: content?.child || [],
         },
         onSubmit: (values, formikHelper) => {
             formikHelper.setSubmitting(false);
 
             // post setting API here
-
-            // dispatch(
-            //     postSetting(
-            //         {
-            //             ...content,
-            //             [sectionName]: { ...content?.[sectionName], ...values },
-            //         },
-            //         page,
-            //     ),
-            // );
+            APICallPostSetting(sectionName, values);
 
             onHide();
         },
@@ -222,9 +206,23 @@ function EditTool({ sectionName, page, show, onHide, content }) {
     const [uploadModal, setUploadModal] = React.useState(false);
     const [uploadModalChild, setUploadModalChild] = React.useState(false);
     const [uploadModalChildImage, setUploadModalChildImage] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
+
+    function APICallMediaList(request, callback) {
+        setLoading(true);
+        getMedias(request)
+            .then((response) => {
+                callback?.(response?.list);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setLoading(false);
+            });
+    }
 
     return (
         <Modal
+            size="lg"
             style={{ width: '100%', overflow: 'unset', background: 'none' }}
             show={show}
             onHide={onHide}
@@ -240,16 +238,16 @@ function EditTool({ sectionName, page, show, onHide, content }) {
                 }}
             >
                 <p>
-                    <h4>Section name: </h4>
+                    <b>Section name: </b>
                     {sectionName}
                 </p>
                 <p>
-                    <h4>Page:</h4> {page}
+                    <b>Page:</b> {page}
                 </p>
                 <FormikProvider value={validation}>
                     <Form onSubmit={handleSubmit} className="edit-form-content">
                         <Form.Group className="mb-3" id="title_of_page">
-                            <Form.Label>Title</Form.Label>
+                            <Form.Label className="fw-bold">Title</Form.Label>
                             <Form.Control
                                 name={`title`}
                                 value={values.title}
@@ -260,7 +258,7 @@ function EditTool({ sectionName, page, show, onHide, content }) {
                             <Form.Control.Feedback type="invalid">{errors?.title}</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" id="subtitle_of_page">
-                            <Form.Label>Subtitle</Form.Label>
+                            <Form.Label className="fw-bold">Subtitle</Form.Label>
                             <Form.Control
                                 name={`subtitle`}
                                 value={values.subtitle}
@@ -271,7 +269,7 @@ function EditTool({ sectionName, page, show, onHide, content }) {
                             <Form.Control.Feedback type="invalid">{errors?.subtitle}</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" id="content_of_page">
-                            <Form.Label>Content</Form.Label>
+                            <Form.Label className="fw-bold">Content</Form.Label>
                             <TextEditor
                                 name="content"
                                 value={values?.content}
@@ -298,11 +296,53 @@ function EditTool({ sectionName, page, show, onHide, content }) {
                                         setFieldValue('images', [...values.images, link]);
                                         setUploadModal(false);
                                     }}
+                                    APIPostAsset={({ file, setProgressPercent, setNewUpload }) => {
+                                        setLoading(true);
+                                        postMedia(
+                                            {
+                                                file,
+                                            },
+                                            {
+                                                onUploadProgress: function (progressEvent) {
+                                                    setProgressPercent(
+                                                        Math.round(100 * progressEvent.loaded) / progressEvent.total,
+                                                    );
+                                                },
+                                            },
+                                        )
+                                            .then((response) => {
+                                                setNewUpload({
+                                                    assetLink: response.assetLink,
+                                                });
+
+                                                setLoading(false);
+                                            })
+                                            .catch((error) => {
+                                                setLoading(false);
+                                            });
+                                    }}
+                                    APICallAssets={({ page, take, setUploads }) => {
+                                        APICallMediaList(
+                                            {
+                                                skip: page,
+                                                take,
+                                            },
+                                            (uploads) => setUploads(uploads),
+                                        );
+                                    }}
                                 ></UploadModal>
-                                <div className="admin-images-form">
-                                    {values?.images?.map((item, index) => {
+
+                                <Row>
+                                    {values?.images?.map((image, index) => {
                                         return (
-                                            <div style={{ textAlign: 'right' }} key={index}>
+                                            <Col
+                                                xs="auto"
+                                                sm="6"
+                                                md="4"
+                                                lg="3"
+                                                style={{ textAlign: 'right' }}
+                                                key={index}
+                                            >
                                                 <FaTimes
                                                     style={{ cursor: 'pointer' }}
                                                     onClick={() => {
@@ -312,11 +352,11 @@ function EditTool({ sectionName, page, show, onHide, content }) {
                                                         );
                                                     }}
                                                 ></FaTimes>
-                                                <img src={item} width={'100%'} />;
-                                            </div>
+                                                <img src={image} width={'100%'} />
+                                            </Col>
                                         );
                                     })}
-                                </div>
+                                </Row>
                             </div>
                             <div className="py-4">
                                 <div className="admin-image-form-title">Child Image</div>
@@ -324,16 +364,50 @@ function EditTool({ sectionName, page, show, onHide, content }) {
                                     Upload your child images
                                 </Button>
                                 <UploadModal
-                                    show={uploadModalChild}
+                                    show={uploadModal}
                                     onSave={(hasShown) => {}}
                                     onSelected={(selected) => {}}
                                     selected={''}
                                     onHide={() => {
-                                        setUploadModalChild(false);
+                                        setUploadModal(false);
                                     }}
                                     onCopyLink={(link) => {
-                                        setFieldValue('childImage', [...values.childImage, link]);
-                                        setUploadModalChild(false);
+                                        setFieldValue('images', [...values.images, link]);
+                                        setUploadModal(false);
+                                    }}
+                                    APIPostAsset={({ file, setProgressPercent, setNewUpload }) => {
+                                        setLoading(true);
+                                        postMedia(
+                                            {
+                                                file,
+                                            },
+                                            {
+                                                onUploadProgress: function (progressEvent) {
+                                                    setProgressPercent(
+                                                        Math.round(100 * progressEvent.loaded) / progressEvent.total,
+                                                    );
+                                                },
+                                            },
+                                        )
+                                            .then((response) => {
+                                                setNewUpload({
+                                                    assetLink: response.assetLink,
+                                                });
+
+                                                setLoading(false);
+                                            })
+                                            .catch((error) => {
+                                                setLoading(false);
+                                            });
+                                    }}
+                                    APICallAssets={({ page, take, setUploads }) => {
+                                        APICallMediaList(
+                                            {
+                                                skip: page,
+                                                take,
+                                            },
+                                            (uploads) => setUploads(uploads),
+                                        );
                                     }}
                                 ></UploadModal>
                                 <div className="admin-images-form">
@@ -447,21 +521,60 @@ function EditTool({ sectionName, page, show, onHide, content }) {
                                                             Upload your image
                                                         </Button>
                                                         <UploadModal
-                                                            show={uploadModalChildImage}
+                                                            show={uploadModal}
                                                             onSave={(hasShown) => {}}
                                                             onSelected={(selected) => {}}
                                                             selected={''}
                                                             onHide={() => {
-                                                                setUploadModalChildImage(false);
+                                                                setUploadModal(false);
                                                             }}
                                                             onCopyLink={(link) => {
-                                                                setFieldValue(`child[${index}].image`, link);
-                                                                setUploadModalChildImage(false);
+                                                                setFieldValue('images', [...values.images, link]);
+                                                                setUploadModal(false);
+                                                            }}
+                                                            APIPostAsset={({
+                                                                file,
+                                                                setProgressPercent,
+                                                                setNewUpload,
+                                                            }) => {
+                                                                setLoading(true);
+                                                                postMedia(
+                                                                    {
+                                                                        file,
+                                                                    },
+                                                                    {
+                                                                        onUploadProgress: function (progressEvent) {
+                                                                            setProgressPercent(
+                                                                                Math.round(100 * progressEvent.loaded) /
+                                                                                    progressEvent.total,
+                                                                            );
+                                                                        },
+                                                                    },
+                                                                )
+                                                                    .then((response) => {
+                                                                        setNewUpload({
+                                                                            assetLink: response.assetLink,
+                                                                        });
+
+                                                                        setLoading(false);
+                                                                    })
+                                                                    .catch((error) => {
+                                                                        setLoading(false);
+                                                                    });
+                                                            }}
+                                                            APICallAssets={({ page, take, setUploads }) => {
+                                                                APICallMediaList(
+                                                                    {
+                                                                        skip: page,
+                                                                        take,
+                                                                    },
+                                                                    (uploads) => setUploads(uploads),
+                                                                );
                                                             }}
                                                         ></UploadModal>
                                                         <div className="admin-images-form">
                                                             <div style={{ textAlign: 'right' }}>
-                                                                {item.image ? (
+                                                                {item?.image ? (
                                                                     <FaTimes
                                                                         style={{ cursor: 'pointer' }}
                                                                         onClick={() => {
