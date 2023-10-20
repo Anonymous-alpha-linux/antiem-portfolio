@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import Sidebar from '../../layout/sidebar/sidebar';
 import { GoFileMedia } from 'react-icons/go';
 import { CgWebsite } from 'react-icons/cg';
@@ -9,34 +9,39 @@ import { IoIosSettings } from 'react-icons/io';
 // Pages
 import { PageContentEditor, PageAssetUploader, PageAdminBlogPost, PageAdminContact } from '../../page';
 
+function RedirectAdmin() {
+    console.log('redirected');
+    return <Navigate to={'/admin/media'} replace></Navigate>;
+}
+
 let sidebarMenu = [
     {
         name: 'Thư viện',
-        path: '/admin/media',
+        path: 'media',
         element: <PageAssetUploader></PageAssetUploader>,
         icon: <GoFileMedia></GoFileMedia>,
     },
     {
         name: 'Nội dung trang',
-        path: '/admin/web-content-editor?content=landing+page',
+        path: 'web-content-editor',
         element: <PageContentEditor></PageContentEditor>,
         icon: <CgWebsite></CgWebsite>,
     },
     {
         name: 'Bài viết',
-        path: '/admin/blog',
+        path: 'blog',
         element: <PageAdminBlogPost></PageAdminBlogPost>,
         icon: <BsNewspaper></BsNewspaper>,
     },
     {
         name: 'Liên lạc',
-        path: '/admin/web-content-editor',
+        path: 'web-content-editor?content=contact',
         element: <PageAdminContact></PageAdminContact>,
         icon: <BiSolidPhoneCall></BiSolidPhoneCall>,
     },
     {
         name: 'Cài đặt',
-        path: '/admin/setting',
+        path: 'setting',
         element: <h2>Admin Setting</h2>,
         icon: <IoIosSettings></IoIosSettings>,
     },
@@ -50,6 +55,16 @@ export const adminRoutes = [
                 <Outlet></Outlet>
             </Sidebar>
         ),
-        children: sidebarMenu,
+        children: [
+            ...sidebarMenu,
+            {
+                path: '*',
+                element: <RedirectAdmin></RedirectAdmin>,
+            },
+        ],
+    },
+    {
+        path: '*',
+        element: <RedirectAdmin></RedirectAdmin>,
     },
 ];

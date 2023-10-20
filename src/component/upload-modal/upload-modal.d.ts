@@ -3,10 +3,11 @@ type UploadModalProps = {
     show: boolean;
     onHide: (hasShown: boolean) => void;
     onSelected: (selected: string) => void;
+    loading?: boolean;
     APICallAssets: (args: {
         take: number;
         page: number;
-        setUploads: (uploads: { assetLink: string }[]) => void;
+        setUploads: (uploads: { assetLink: string }[], total: number) => void;
     }) => void;
     APIPostAsset: (args: { file: File; setProgressPercent: (percentage: number) => void }) => void;
 };
