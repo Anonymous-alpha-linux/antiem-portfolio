@@ -8,6 +8,8 @@
     width: 100%;
     height: 100px;
     transition: all 0.5s;
+    display: flex;
+    align-items: center;
 }
 .nav-component:hover {
     background-color: white;

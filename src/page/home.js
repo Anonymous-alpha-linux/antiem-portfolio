@@ -190,7 +190,7 @@ export default function Home() {
             <section className="section-5 mt-5" id="st-project">
                 <div className="section-5-bg py-5">
                     <div className="container">
-                        <div className="d-flex align-items-center gap-3 mt-5 mb-3">
+                        <div className="d-flex align-items-center gap-3 mt-2 mb-3">
                             <div className="section-3-subtitle">
                                 <b>{homeContent?.project?.subtitle}</b>
                             </div>
