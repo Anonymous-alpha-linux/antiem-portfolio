@@ -8,6 +8,7 @@ import { LuMenuSquare } from 'react-icons/lu';
 //Css
 import '../nav/nav.css';
 import { useLayoutEffect } from 'react';
+import logo from '../../img/logo.svg';
 // import Login from '../../pages/public/login';
 // import Register from '../../pages/public/register';
 
@@ -19,6 +20,8 @@ function Navbar() {
         window.addEventListener('scroll', function () {
             var header = this.document.querySelector('#nav');
             header.classList.toggle('compact', this.window.scrollY > 0);
+            var logo = this.document.querySelector('.logo-antiem');
+            logo.classList.toggle('smaller', this.window.scrollY > 0);
         });
         return () => {
             window.removeEventListener('scroll', () => {});
@@ -31,7 +34,9 @@ function Navbar() {
             <Register show={register} hide={() => setRegister(false)}></Register> */}
             <Row className="w-100">
                 <Col className="nav-frame-1 d-flex align-items-center gap-4">
-                    <div className="nav-logo">Logo</div>
+                    <div className="nav-logo">
+                        <img src={logo} className="logo-antiem" />
+                    </div>
                     <div className="nav-topic justify-content-start align-items-center gap-4">
                         {navlinks.map((item, index) => {
                             return (
@@ -54,7 +59,7 @@ function Navbar() {
                         <div className="nav-btn-action" onClick={() => setRegister(true)}>
                             Đăng ký
                         </div> */}
-                        <div className="btn-outline">Đăng tin</div>
+                        {/* <div className="btn-outline">Đăng tin</div> */}
                     </div>
                     <LuMenuSquare className="nav-menu-icon" onClick={() => setNavMenu(true)}></LuMenuSquare>
                     <SidebarMenu navLink={navlinks} show={navMenu} hide={() => setNavMenu(false)}></SidebarMenu>

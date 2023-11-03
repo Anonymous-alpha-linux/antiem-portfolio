@@ -8,6 +8,7 @@ import { TbSocial } from 'react-icons/tb';
 import { FaFacebookSquare } from 'react-icons/fa';
 import { FaYoutubeSquare } from 'react-icons/fa';
 import { IoMailSharp } from 'react-icons/io5';
+import logo from '../../img/logo.svg';
 import '../footer/footer.css';
 
 export default function Footer() {
@@ -15,10 +16,12 @@ export default function Footer() {
         <div className="footer">
             <div className="container py-4">
                 <Row className="mb-3 pb-3 border-bottom footer-contact-form">
-                    <Col xs="12" sm="3">
-                        <div>Logo</div>
+                    <Col xs="12" sm="6" xl="3">
+                        <div>
+                            <img src={logo} className="logo-antiem-footer" />
+                        </div>
                     </Col>
-                    <Col xs="12" sm="3">
+                    <Col xs="12" sm="6" xl="3">
                         <div className="footer-col-top">
                             <span>
                                 <FiPhoneCall style={{ fontSize: '25px' }}></FiPhoneCall>
@@ -31,7 +34,7 @@ export default function Footer() {
                             </span>
                         </div>
                     </Col>
-                    <Col xs="12" sm="3">
+                    <Col xs="12" sm="6" xl="3">
                         <div className="footer-col-top">
                             <span>
                                 <BiUserVoice style={{ fontSize: '25px' }}></BiUserVoice>
@@ -44,7 +47,7 @@ export default function Footer() {
                             </span>
                         </div>
                     </Col>
-                    <Col xs="12" sm="3">
+                    <Col xs="12" sm="6" xl="3">
                         <div className="footer-col-top">
                             <span>
                                 <TbSocial style={{ fontSize: '25px' }}></TbSocial>
