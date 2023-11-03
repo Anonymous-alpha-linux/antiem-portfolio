@@ -38,6 +38,9 @@
     border-radius: 5px;
     cursor: pointer;
 }
+.logo-antiem-footer {
+    width: 200px;
+}
 @media only screen and (max-width: 576px) {
     .footer-contact-form {
         gap: 20px;
