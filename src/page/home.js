@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './style/home.css';
-import { Col, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, EffectFade, Mousewheel, Keyboard, Autoplay } from 'swiper/modules';
 import { Fade } from 'react-reveal';
@@ -91,6 +91,7 @@ let homePlaceholder = {
 export default function Home() {
     const [homeContent, setHomeContent] = useState();
     const { blogs, setPage, setTake, page, take, total } = useBlog();
+    const phone = '0909 850 381';
 
     useEffect(() => {
         getSetting({
@@ -146,6 +147,9 @@ export default function Home() {
                                 }}
                             ></div>
                         </Fade>
+                        <Button variant="success" href={`tel:${phone}`}>
+                            Liên hệ ngay
+                        </Button>
                     </Col>
                     <Col sm="12" lg="8" className="section-2-img-form p-0">
                         <img
