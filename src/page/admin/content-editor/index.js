@@ -21,6 +21,7 @@ import { getSetting, postSetting } from '../../../api';
 import { FileUploader } from '../../../container/file-uploader';
 // Internal Images
 import errorImg from '../../../img/img-error.png';
+import { toast } from 'react-toastify';
 
 let list_of_websites = list_pages;
 
@@ -43,36 +44,33 @@ function ContentEditor() {
             </div>
 
             <div id="content-editor-body">
-                {!params.get('content') || params.get('content') === 'contact' ? (
-                    <ContactInformation></ContactInformation>
-                ) : (
-                    <PageDemonstration
-                        nameOfPage={params.get('content')}
-                        getWebContent={({ page, setPageContent }) => {
-                            getSetting({
-                                page: page,
+                <PageDemonstration
+                    nameOfPage={params.get('content')}
+                    getWebContent={({ page, setPageContent }) => {
+                        getSetting({
+                            page: page,
+                        })
+                            .then((response) => {
+                                if (response?.data?.isSuccess === false) {
+                                    setPageContent({});
+                                    return;
+                                }
+                                toast.success('');
+                                setPageContent(JSON.parse(response));
                             })
-                                .then((response) => {
-                                    if (response?.data?.isSuccess === false) {
-                                        setPageContent({});
-                                        return;
-                                    }
-                                    setPageContent(JSON.parse(response));
-                                })
-                                .catch((error) => {});
-                        }}
-                        editWebContent={({ page, newContent, setPageContent }) => {
-                            postSetting({
-                                page,
-                                body: newContent,
+                            .catch((error) => {});
+                    }}
+                    editWebContent={({ page, newContent, setPageContent }) => {
+                        postSetting({
+                            page,
+                            body: newContent,
+                        })
+                            .then((response) => {
+                                setPageContent(JSON.parse(response));
                             })
-                                .then((response) => {
-                                    setPageContent(JSON.parse(response));
-                                })
-                                .catch((error) => {});
-                        }}
-                    ></PageDemonstration>
-                )}
+                            .catch((error) => {});
+                    }}
+                ></PageDemonstration>
             </div>
         </section>
     );
@@ -176,33 +174,12 @@ function ListWebDropdownOptions() {
                         </Dropdown.Item>
                     );
                 })}
-
-                <Dropdown.Item>
-                    <Link
-                        to={{
-                            search: createSearchParams({
-                                content: 'contact',
-                            }).toString(),
-                        }}
-                        style={linkStyle}
-                    >
-                        Liên lạc
-                    </Link>
-                </Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
     );
 }
 
 // Form Editors Component
-function ContactInformation() {
-    return (
-        <section>
-            <h2>Edit Contact Information</h2>
-        </section>
-    );
-}
-
 function EditTool({ sectionName, page, show, onHide, content, APICallPostSetting }) {
     const validation = useFormik({
         initialValues: {

@@ -6,6 +6,8 @@ import { Navigation, EffectFade, Mousewheel, Keyboard, Autoplay } from 'swiper/m
 import { Fade } from 'react-reveal';
 
 import { getSetting } from '../api';
+// Custom hooks
+import { useBlog } from '../hooks';
 
 let homePlaceholder = {
     banner: {
@@ -88,6 +90,7 @@ let homePlaceholder = {
 
 export default function Home() {
     const [homeContent, setHomeContent] = useState();
+    const { blogs, setPage, setTake, page, take, total } = useBlog();
 
     useEffect(() => {
         getSetting({
@@ -120,7 +123,7 @@ export default function Home() {
                 >
                     {homeContent?.['banner']?.['images']?.map?.((url, index) => (
                         <SwiperSlide key={index} className="section-1-slide">
-                            <img src={url} className="section-1-slide-img" />
+                            <img alt={'banner_image'} src={url} className="section-1-slide-img" />
                             <div
                                 className="section-1-slide-img-filter"
                                 style={{ backgroundImage: `url(${url})` }}
@@ -150,6 +153,7 @@ export default function Home() {
                             src={homeContent?.about?.images?.[0]}
                             width={'100%'}
                             loading="lazy"
+                            alt="about_image"
                         />
                     </Col>
                 </Row>
@@ -169,7 +173,7 @@ export default function Home() {
                             <Fade bottom distance="7%" duration={500 + index * 600}>
                                 <div className="section-3-form">
                                     <div className="section-3-card-img">
-                                        <img src={item?.image} height={'100%'} width={'100%'} />
+                                        <img src={item?.image} height={'100%'} width={'100%'} alt="card_image" />
                                     </div>
                                     <div className="section-3-card-content">
                                         <div className="my-1" style={{ fontSize: '25px' }}>
@@ -215,7 +219,7 @@ export default function Home() {
                                 <SwiperSlide key={index} style={{ overflow: 'hidden' }}>
                                     <Row className="pb-4">
                                         <Col className="p-0">
-                                            <img src={item?.image} width={'100%'} />
+                                            <img src={item?.image} width={'100%'} alt={item?.title} loading="lazy" />
                                         </Col>
                                         <Col
                                             className="d-flex justify-content-center align-items-center flex-column gap-4 p-0"
@@ -239,7 +243,7 @@ export default function Home() {
                                 <Col xs="6" sm="6" lg="4" className="mb-2" key={index}>
                                     <Row>
                                         <Col className="p-0">
-                                            <img src={item?.image} width={'100%'} />
+                                            <img src={item?.image} width={'100%'} alt={item?.title} />
                                         </Col>
                                         <Col>
                                             <div className="section-5-project-date">{item?.subtitle}</div>
@@ -259,6 +263,7 @@ export default function Home() {
                         src="https://t3.ftcdn.net/jpg/03/77/38/02/360_F_377380244_Z7AOXqVIDzLb4XJQ7RXfGnEJrcwhcBp1.jpg"
                         height={'100%'}
                         className="section-4-img"
+                        alt={'blog_image'}
                     />
                     <div className="section-4-content">
                         <div className="section-4-brand">

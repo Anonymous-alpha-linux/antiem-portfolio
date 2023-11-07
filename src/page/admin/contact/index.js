@@ -3,18 +3,26 @@ import React from 'react';
 import { Button, Form, FormGroup } from 'react-bootstrap';
 import { getSetting, postSetting } from '../../../api';
 import { useEffect } from 'react';
-import { AiOutlineFacebook, AiOutlineInstagram, AiOutlinePhone, AiOutlineUpload } from 'react-icons/ai';
+import { AiOutlineFacebook, AiOutlineInstagram, AiOutlineMail, AiOutlinePhone, AiOutlineUpload } from 'react-icons/ai';
 import { FaTelegramPlane, FaTiktok } from 'react-icons/fa';
 import { useState } from 'react';
 import { FileUploader } from '../../../container/file-uploader';
+import { toast } from 'react-toastify';
 
 function ContactInformationEditor() {
     // API Layer
-    function APICallPostContact(values) {
+    function APICallPostContact(values, callback) {
         postSetting({
             page: 'contact',
             body: values,
-        });
+        })
+            .then((response) => {
+                toast.success('Your changes has been saved');
+                callback?.(response);
+            })
+            .catch((error) => {
+                toast.error(error || 'Something went wrong');
+            });
     }
 
     function APICallGetContact() {
@@ -32,6 +40,7 @@ function ContactInformationEditor() {
         phone: '',
         facebook: '',
         instagram: '',
+        email: '',
         zalo: '',
         telegram: '',
         tiktok: '',
@@ -42,6 +51,7 @@ function ContactInformationEditor() {
             phone: initialValues?.phone,
             facebook: initialValues?.facebook,
             instagram: initialValues?.instagram,
+            email: initialValues?.email,
             zalo: initialValues?.zalo,
             telegram: initialValues?.telegram,
             tiktok: initialValues?.tiktok,
@@ -103,6 +113,19 @@ function ContactInformationEditor() {
                             <Form.Control
                                 name="instagram"
                                 value={values.instagram}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            ></Form.Control>
+                        </FormGroup>
+
+                        <FormGroup id="form-control-email" className="mb-2">
+                            <Form.Label className="fw-bold">
+                                <AiOutlineMail className="me-2"></AiOutlineMail>
+                                <span className="align-middle">Email</span>
+                            </Form.Label>
+                            <Form.Control
+                                name="email"
+                                value={values.email}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             ></Form.Control>

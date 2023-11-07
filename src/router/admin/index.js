@@ -35,7 +35,7 @@ let sidebarMenu = [
     },
     {
         name: 'Liên lạc',
-        path: 'web-content-editor?content=contact',
+        path: 'web-contact-editor',
         element: <PageAdminContact></PageAdminContact>,
         icon: <BiSolidPhoneCall></BiSolidPhoneCall>,
     },
