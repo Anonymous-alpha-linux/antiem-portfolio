@@ -232,7 +232,7 @@ export default function Home() {
                                             <div className="section-5-project-date">{item?.subtitle}</div>
                                             <div className="section-5-project-name">{item?.title}</div>
                                             <div
-                                                className="section-5-project-description"
+                                                className="section-5-project-description p-2"
                                                 dangerouslySetInnerHTML={{ __html: item?.content }}
                                             ></div>
                                         </Col>
